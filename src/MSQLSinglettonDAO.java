@@ -122,6 +122,11 @@ public class MSQLSinglettonDAO implements CountryDAO {
 	
 		return null;
 	}
+	
+	public void closing() {
+		DataSource source = DataSource.getInstance();
+		source.closing();
+	}
 
 
 

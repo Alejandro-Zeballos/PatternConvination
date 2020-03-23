@@ -10,7 +10,7 @@ public class DataSource{
 	
 	private static DataSource instance = null;
 	
-	private String db = "jdbc:mysql://apontejaj.com:3306/customer?useSSL=false";
+	private String db = "jdbc:mysql://apontejaj.com:3306/world?useSSL=false";
 	private String un = "cctstudent";
 	private String pw = "Pass1234!";
 	

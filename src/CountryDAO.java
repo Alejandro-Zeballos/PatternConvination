@@ -6,5 +6,6 @@ public interface CountryDAO {
 	public Country findCountryByName(String name);
 	public Country findCountryByCode(String code);
 	public boolean saveCountry(Country country);
+	public void closing();
 	
 }

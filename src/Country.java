@@ -14,6 +14,15 @@ public class Country {
 		this.surfaceArea = builder.surfaceArea;
 		this.headOfState = builder.headOfState;
 	}
+	
+	@Override
+	public String toString() {
+		return "\tCountry name = " + this.name + "\n\t"
+				+ "Code = " + this.code + "\n\t"
+				+ "Continent = " + this.continent.name() + "\n\t"
+				+ "Surface Area = " + this.surfaceArea + "\n\t"
+				+ "Head of State = " + this.headOfState + "\n";
+	}
 
 	public String getCode() {
 		return code;
@@ -64,6 +73,7 @@ public class Country {
 		public Country build() {
 			return new Country(this);
 		}
+		
 	}
 	
 	
