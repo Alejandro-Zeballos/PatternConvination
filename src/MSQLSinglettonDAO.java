@@ -26,7 +26,7 @@ public class MSQLSinglettonDAO implements CountryDAO {
 				String hState = rs.getString(5);
 				
 				//Using the builder pattern for creating a new country object
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.valueOf(continent))
+				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.getByName(continent))
 						.setSurfaceArea(sArea)
 						.setHeadOfState(hState);
 				
@@ -58,7 +58,7 @@ public class MSQLSinglettonDAO implements CountryDAO {
 				String hState = rs.getString(5);
 				
 				//Using the builder pattern for creating a new country object
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.valueOf(continent))
+				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.getByName(continent))
 						.setSurfaceArea(sArea)
 						.setHeadOfState(hState);
 				
@@ -85,7 +85,7 @@ public class MSQLSinglettonDAO implements CountryDAO {
 		String hState = country.getHeadOfState();
 		
 		String query = "INSERT INTO country(Code, Name, Continent, SurfaceArea, HeadOfState) "
-				+ "VALUES ('"+ code +"','"+ name + "','" + continent.name() + "','" +sArea+ "','" +hState+ "');";
+				+ "VALUES ('"+ code +"','"+ name + "','" + continent.getName() + "'," +sArea+ ",'" +hState+ "');";
 		
 		return source.save(query);
 		
@@ -96,7 +96,7 @@ public class MSQLSinglettonDAO implements CountryDAO {
 		// TODO Auto-generated method stub
 		DataSource source = DataSource.getInstance();
 		
-		String query = "SELECT * FROM country WHERE Name = " + name;
+		String query = "SELECT * FROM country WHERE Name = '" + name + "'";
 		ResultSet rs = source.select(query);
 		Country country = null;
 		
@@ -108,7 +108,7 @@ public class MSQLSinglettonDAO implements CountryDAO {
 				String hState = rs.getString(5);
 				
 				//Using the builder pattern for creating a new country object
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.valueOf(continent))
+				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.getByName(continent))
 						.setSurfaceArea(sArea)
 						.setHeadOfState(hState);
 				

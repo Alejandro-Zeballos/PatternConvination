@@ -19,7 +19,7 @@ public class Country {
 	public String toString() {
 		return "\tCountry name = " + this.name + "\n\t"
 				+ "Code = " + this.code + "\n\t"
-				+ "Continent = " + this.continent.name() + "\n\t"
+				+ "Continent = " + this.continent.getName() + "\n\t"
 				+ "Surface Area = " + this.surfaceArea + "\n\t"
 				+ "Head of State = " + this.headOfState + "\n";
 	}

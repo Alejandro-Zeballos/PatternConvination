@@ -76,6 +76,9 @@ public class Main {
 		switch(option) {
 		case 1:
 			countries = dao.getCountries();
+			for(Country country: countries ) {
+				System.out.println(country);
+			}
 			break;
 			
 		case 2:
@@ -114,7 +117,7 @@ public class Main {
 				int Option = getOption();
 				continent = getContinentEnum(Option);
 				
-				surfaceArea = Integer.parseInt(getInput("Input the surface area of the country"));
+				surfaceArea = (float) Double.parseDouble(getInput("Input the surface area of the country"));
 				countryHead = getInput("Input the name of the president");
 				
 				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent);
@@ -132,6 +135,8 @@ public class Main {
 			
 			//saving the country in the database
 			dao.saveCountry(country);
+			System.out.println("Saved correctly");
+			System.out.println("");
 			break;
 		
 		case 5:

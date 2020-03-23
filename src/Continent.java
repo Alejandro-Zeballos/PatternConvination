@@ -21,4 +21,14 @@ public enum Continent {
 		return name;
 	}
 	
+	public static Continent getByName(String name) {
+		for(Continent continent: values()) {
+			if(continent.getName().equals(name)) {
+				return continent;
+			}		
+		}
+		
+		throw new IllegalArgumentException(name + " is not a valid Continent");
+	}
+	
 }
