@@ -4,9 +4,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Main {
-
+	//data access object dao
 	private CountryDAO dao;
-	private ArrayList<Country> countries;;
+	
+	//array of countries
+	private ArrayList<Country> countries;
 	private Country country;
 	private BufferedReader br;
 	
@@ -20,16 +22,24 @@ public class Main {
 	}
 	
 	private Main() {
+		
+		//Initializing bufferedReader and DataAccessObject
 		br = new BufferedReader(new InputStreamReader(System.in));
-		dao = new MSQLSinglettonDAO();
+		dao = new MysqlDAO();
 		int option = 0;
 		
+		
+		//Displaying options to the user
 		listOptions();
 		
+		//Recovering option off the user
 		try {
-			option = getOption();
-			runMenuOption(option);
+			
+			option = getOption(); //Getting the user input
+			runMenuOption(option); //Option Listener
+			
 		}catch(IOException e) {
+			//if it brakes for any reason it will initialize the application again
 			e.printStackTrace();
 			initialize();
 		}
@@ -67,6 +77,8 @@ public class Main {
 	}
 	
 	public void runMenuOption(int option) {
+		
+		//this method will be an option listener, running a chunk of code depending on the typed option. 
 		String name;
 		String code;
 		Continent continent;
@@ -74,6 +86,7 @@ public class Main {
 		String countryHead;
 		
 		switch(option) {
+		
 		case 1:
 			countries = dao.getCountries();
 			for(Country country: countries ) {
@@ -82,7 +95,6 @@ public class Main {
 			break;
 			
 		case 2:
-		
 			try {
 				code = getInput("Input the country code");
 			}catch(IOException e) {
@@ -108,10 +120,10 @@ public class Main {
 			break;
 		
 		case 4:
-			
 			try {
 				name = getInput("Input the country name");
 				code = getInput("Input the country code");
+				
 				//this line will present to the user the continents available and asks to choose one
 				listContinentOptions();
 				int Option = getOption();
@@ -119,8 +131,6 @@ public class Main {
 				
 				surfaceArea = (float) Double.parseDouble(getInput("Input the surface area of the country"));
 				countryHead = getInput("Input the name of the president");
-				
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent);
 				
 				//creating a new country object with the CountryBuilder
 				country = new Country.CountryBuilder(code, name, continent)
@@ -144,10 +154,12 @@ public class Main {
 			System.exit(0);
 		
 		default:
+			//if the number the user inserted is not in the options then it will tell so and break off the switch
 			System.out.println("Wrong option");
 			break;
 			
 		}
+		
 		initialize();
 	}
 	
@@ -178,24 +190,18 @@ public class Main {
 	
 	public String getInput(String message) throws IOException{
 		
+		//this method will only get and input from the user displaying a message and throwing an IOException
+		//if something foes wrong
 		System.out.println("");
 		System.out.println(message);
 		String input = br.readLine();
 		return input;
 		
 	}
-	
-	public String getNameInput() throws IOException{
-		
-		System.out.println("");
-		System.out.println("Input the country code");
-		String code = br.readLine();
-		return code;
-		
-	}
 
 	public int getOption() throws IOException{
 		
+		//this method will try to get a number off the user, if it fails, it will return a 0
 		
 		String option = br.readLine().trim();
 		

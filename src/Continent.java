@@ -17,10 +17,12 @@ public enum Continent {
 	
 	private String name;
 	
+	//this method will return the name attribute of the enum
 	public String getName() {
 		return name;
 	}
 	
+	//this method will return the Enum based on the name atribute of the enum
 	public static Continent getByName(String name) {
 		for(Continent continent: values()) {
 			if(continent.getName().equals(name)) {

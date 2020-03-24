@@ -4,16 +4,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class MSQLSinglettonDAO implements CountryDAO {
+public class MysqlDAO implements CountryDAO {
 
 	
 
 	@Override
 	public ArrayList<Country> getCountries() {
 		// TODO Auto-generated method stub
-
+		
+		//Creating the array of countries and getting the instance of the database
 		ArrayList<Country> countries = new ArrayList<Country>();
-		DataSource source = DataSource.getInstance();
+		DataSourceSingleton source = DataSourceSingleton.getInstance();
 		
 		ResultSet rs = source.select("SELECT * FROM country");
 		
@@ -26,11 +27,11 @@ public class MSQLSinglettonDAO implements CountryDAO {
 				String hState = rs.getString(5);
 				
 				//Using the builder pattern for creating a new country object
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.getByName(continent))
+				Country country = new Country.CountryBuilder(code, name, Continent.getByName(continent))
 						.setSurfaceArea(sArea)
-						.setHeadOfState(hState);
+						.setHeadOfState(hState)
+						.build();
 				
-				Country country = builder.build();
 				countries.add(country);
 			}
 			
@@ -44,7 +45,7 @@ public class MSQLSinglettonDAO implements CountryDAO {
 	@Override
 	public Country findCountryByCode(String code) {
 		// TODO Auto-generated method stub
-		DataSource source = DataSource.getInstance();
+		DataSourceSingleton source = DataSourceSingleton.getInstance();
 		
 		String query = "SELECT * FROM country WHERE Code = " + code;
 		ResultSet rs = source.select(query);
@@ -58,11 +59,11 @@ public class MSQLSinglettonDAO implements CountryDAO {
 				String hState = rs.getString(5);
 				
 				//Using the builder pattern for creating a new country object
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.getByName(continent))
+				country = new Country.CountryBuilder(code, name, Continent.getByName(continent))
 						.setSurfaceArea(sArea)
-						.setHeadOfState(hState);
+						.setHeadOfState(hState)
+						.build();
 				
-				country = builder.build();
 				return country;
 				
 			}
@@ -76,7 +77,9 @@ public class MSQLSinglettonDAO implements CountryDAO {
 	@Override
 	public boolean saveCountry(Country country) {
 		// TODO Auto-generated method stub
-		DataSource source = DataSource.getInstance();
+		
+		//this method will save a country in the database
+		DataSourceSingleton source = DataSourceSingleton.getInstance();
 		
 		String name = country.getName();
 		String code = country.getCode();
@@ -94,7 +97,7 @@ public class MSQLSinglettonDAO implements CountryDAO {
 	@Override
 	public Country findCountryByName(String name) {
 		// TODO Auto-generated method stub
-		DataSource source = DataSource.getInstance();
+		DataSourceSingleton source = DataSourceSingleton.getInstance();
 		
 		String query = "SELECT * FROM country WHERE Name = '" + name + "'";
 		ResultSet rs = source.select(query);
@@ -108,11 +111,11 @@ public class MSQLSinglettonDAO implements CountryDAO {
 				String hState = rs.getString(5);
 				
 				//Using the builder pattern for creating a new country object
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, Continent.getByName(continent))
+				country = new Country.CountryBuilder(code, name, Continent.getByName(continent))
 						.setSurfaceArea(sArea)
-						.setHeadOfState(hState);
-				
-				country = builder.build();
+						.setHeadOfState(hState)
+						.build();
+	
 				return country;
 				
 			}
@@ -124,8 +127,11 @@ public class MSQLSinglettonDAO implements CountryDAO {
 	}
 	
 	public void closing() {
-		DataSource source = DataSource.getInstance();
-		source.closing();
+		
+		//Closing the database instance
+		DataSourceSingleton.getInstance()
+						.closing();
+		
 	}
 
 

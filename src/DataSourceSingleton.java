@@ -6,9 +6,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 
-public class DataSource{
+public class DataSourceSingleton{
 	
-	private static DataSource instance = null;
+	//Singleton with lazy implementation
+	
+	private static DataSourceSingleton instance = null;
 	
 	private String db = "jdbc:mysql://apontejaj.com:3306/world?useSSL=false";
 	private String un = "cctstudent";
@@ -19,7 +21,7 @@ public class DataSource{
 	private ResultSet rs = null;
 		
 	
-	private DataSource() {
+	private DataSourceSingleton() {
 		
 		try{
 			
@@ -47,10 +49,11 @@ public class DataSource{
 		}
 	}
 	
-	public static DataSource getInstance() {
+	//this method will return the instance of the singleton
+	public static DataSourceSingleton getInstance() {
 		
 		if(instance==null) {
-			instance = new DataSource();
+			instance = new DataSourceSingleton();
 		}
 		return instance;
 		
@@ -71,7 +74,7 @@ public class DataSource{
 	}
 	
 	public void closing() {
-
+		//this method will close the connection, statement and resultSet if the DAO.
 		try {
 			if(rs != null) {
 				rs.close();
@@ -84,6 +87,7 @@ public class DataSource{
 		
 	}
 	
+	//this method is in charge of saving something to the database
 	public boolean save(String query) {
 		
 		try {
