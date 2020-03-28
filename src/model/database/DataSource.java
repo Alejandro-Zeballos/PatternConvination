@@ -1,3 +1,4 @@
+package model.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -6,11 +7,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 
-public class DataSourceSingleton{
+public class DataSource{
 	
 	//Singleton with lazy implementation
+	//of the DataSource
 	
-	private static DataSourceSingleton instance = null;
+	private static DataSource instance = null;
 	
 	private String db = "jdbc:mysql://apontejaj.com:3306/world?useSSL=false";
 	private String un = "cctstudent";
@@ -21,7 +23,7 @@ public class DataSourceSingleton{
 	private ResultSet rs = null;
 		
 	
-	private DataSourceSingleton() {
+	private DataSource() {
 		
 		try{
 			
@@ -50,10 +52,10 @@ public class DataSourceSingleton{
 	}
 	
 	//this method will return the instance of the singleton
-	public static DataSourceSingleton getInstance() {
+	public static DataSource getInstance() {
 		
 		if(instance==null) {
-			instance = new DataSourceSingleton();
+			instance = new DataSource();
 		}
 		return instance;
 		
@@ -96,8 +98,8 @@ public class DataSourceSingleton{
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 	
 

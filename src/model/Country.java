@@ -1,3 +1,6 @@
+package model;
+
+import model.enums.Continent;
 
 public class Country {
 	
@@ -16,10 +19,18 @@ public class Country {
 	}
 	
 	@Override
-	public String toString() {
+	public String toString(){
+		
+		String myContinent;
+		try {
+			myContinent = this.continent.getName();
+		}catch(NullPointerException e) {
+			myContinent = "Error * Continent not supported *";
+		}
+		
 		return "\tCountry name = " + this.name + "\n\t"
 				+ "Code = " + this.code + "\n\t"
-				+ "Continent = " + this.continent.getName() + "\n\t"
+				+ "Continent = " + myContinent + "\n\t"
 				+ "Surface Area = " + this.surfaceArea + "\n\t"
 				+ "Head of State = " + this.headOfState + "\n";
 	}

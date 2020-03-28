@@ -1,12 +1,16 @@
-import java.sql.Connection;
+package model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-public class MysqlDAO implements CountryDAO {
+import model.database.DataSource;
+import model.enums.Continent;
+import model.interfaces.CountryDAO;
 
-	
+
+public class MysqlCountryDAO implements CountryDAO {
+
+	//implementation of interface CountryDAO
 
 	@Override
 	public ArrayList<Country> getCountries() {
@@ -14,11 +18,12 @@ public class MysqlDAO implements CountryDAO {
 		
 		//Creating the array of countries and getting the instance of the database
 		ArrayList<Country> countries = new ArrayList<Country>();
-		DataSourceSingleton source = DataSourceSingleton.getInstance();
+		DataSource source = DataSource.getInstance();
 		
-		ResultSet rs = source.select("SELECT * FROM country");
+		
 		
 		try {
+			ResultSet rs = source.select("SELECT * FROM country");
 			while(rs.next()) {
 				String code = rs.getString(1);
 				String name = rs.getString(2);
@@ -35,24 +40,37 @@ public class MysqlDAO implements CountryDAO {
 				countries.add(country);
 			}
 			
+			return countries;
+			
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return null;
+		}catch(NullPointerException e) {
+			
+			System.out.println("Continent does not match with list of continents...");
+			System.out.println("Stopping query.");
+			System.out.println("");
+			
+			e.printStackTrace();
+			return null;
 		}
-		return countries;
+		
 	}
 
 	@Override
 	public Country findCountryByCode(String code) {
 		// TODO Auto-generated method stub
-		DataSourceSingleton source = DataSourceSingleton.getInstance();
+		DataSource source = DataSource.getInstance();
 		
-		String query = "SELECT * FROM country WHERE Code = " + code;
-		ResultSet rs = source.select(query);
+		String query = "SELECT * FROM country WHERE Code = '" + code + "';";
+	
 		Country country = null;
 		
 		try {
+			ResultSet rs = source.select(query);
 			if(rs.next()) {
+				//Retrieving object attributes if found
 				String name = rs.getString(2);
 				String continent = rs.getString(3);
 				float sArea = rs.getFloat(4);
@@ -64,14 +82,18 @@ public class MysqlDAO implements CountryDAO {
 						.setHeadOfState(hState)
 						.build();
 				
-				return country;
-				
 			}
+				//if not found it will return null because it has not been instantiated
+				return country;
+			
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
+			//if something happened with the database it will return null
+			return null;
 		}
-	
-		return null;
+
+		
 	}
 
 	@Override
@@ -79,7 +101,7 @@ public class MysqlDAO implements CountryDAO {
 		// TODO Auto-generated method stub
 		
 		//this method will save a country in the database
-		DataSourceSingleton source = DataSourceSingleton.getInstance();
+		DataSource source = DataSource.getInstance();
 		
 		String name = country.getName();
 		String code = country.getCode();
@@ -95,16 +117,17 @@ public class MysqlDAO implements CountryDAO {
 	}
 
 	@Override
-	public Country findCountryByName(String name) {
+	public ArrayList<Country> findCountryByName(String name) {
 		// TODO Auto-generated method stub
-		DataSourceSingleton source = DataSourceSingleton.getInstance();
+		DataSource source = DataSource.getInstance();
 		
 		String query = "SELECT * FROM country WHERE Name = '" + name + "'";
 		ResultSet rs = source.select(query);
+		ArrayList<Country> countries = new ArrayList<Country>();
 		Country country = null;
 		
 		try {
-			if(rs.next()) {
+			while(rs.next()) {
 				String code = rs.getString(1);
 				String continent = rs.getString(3);
 				float sArea = rs.getFloat(4);
@@ -115,22 +138,24 @@ public class MysqlDAO implements CountryDAO {
 						.setSurfaceArea(sArea)
 						.setHeadOfState(hState)
 						.build();
-	
-				return country;
 				
+				countries.add(country);
 			}
+			
+			return countries;
+		
 		}catch(SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-	
-		return null;
+		
 	}
 	
 	public void closing() {
 		
 		//Closing the database instance
-		DataSourceSingleton.getInstance()
-						.closing();
+		DataSource.getInstance()
+					.closing();
 		
 	}
 

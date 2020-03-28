@@ -1,3 +1,4 @@
+package model.enums;
 
 public enum Continent {
 	ASIA("Asia"),
@@ -23,14 +24,13 @@ public enum Continent {
 	}
 	
 	//this method will return the Enum based on the name atribute of the enum
-	public static Continent getByName(String name) {
+	public static Continent getByName(String name){
 		for(Continent continent: values()) {
 			if(continent.getName().equals(name)) {
 				return continent;
 			}		
 		}
-		
-		throw new IllegalArgumentException(name + " is not a valid Continent");
+		return null;
 	}
 	
 }
